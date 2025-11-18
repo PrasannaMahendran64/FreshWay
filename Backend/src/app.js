@@ -21,6 +21,10 @@ const fileStore = express.static(path.join(__dirname,"Uploads"))
 app.use("/files",fileStore)
 
 
+app.get("/api", (req, res) => {
+  res.json({ message: "Backend running on Vercel!" });
+});
+
 
 const server = http.createServer(app)
 

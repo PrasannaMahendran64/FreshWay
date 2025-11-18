@@ -1,16 +1,25 @@
-const mongoose = require('mongoose')
-const server = require("./app")
-require('dotenv').config()
+const mongoose = require("mongoose");
+const app = require("./app");
+require("dotenv").config();
 
-const mongodb_url = process.env.MONGODB_URL
+let isConnected = false;
 
-const port = process.env.PORT
+// MongoDB connection (prevents duplicate reconnects in Vercel)
+async function connectDB() {
+  if (isConnected) return;
 
-mongoose.connect(mongodb_url).then(() => {
-    server.listen(port, () => {
-        console.log(`server is running on ${port}`)
-    })
-    console.log("mongodb connected")
-}).catch((err) => {
-    console.log("mongodb error", err)
-})
+  await mongoose.connect(process.env.MONGODB_URL);
+  isConnected = true;
+  console.log("MongoDB connected");
+}
+
+// Vercel Serverless API handler
+module.exports = async (req, res) => {
+  try {
+    await connectDB();
+    return app(req, res); // Express handles the request
+  } catch (error) {
+    console.error("Server error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};

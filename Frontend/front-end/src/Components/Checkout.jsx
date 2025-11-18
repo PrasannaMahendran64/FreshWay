@@ -64,7 +64,7 @@ export default function CheckoutPage() {
       const { razorpay_order_id, amount, currency } = data.data;
 
       const options = {
-        key:"rzp_test_RPuUQUc1K3hEVV", // ✅ from your .env
+        key:"", // ✅ from your .env
         amount,
         currency,
         name: "Your Store",

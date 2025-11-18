@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(router);
 
 // Static uploads
-const fileStore = express.static(path.join(__dirname, "Uploads"));
-app.use("/files", fileStore);
+app.use("/files", express.static(path.join(__dirname, "Uploads")));
 
-module.exports = app;  
+module.exports = app;

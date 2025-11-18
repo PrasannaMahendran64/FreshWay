@@ -320,6 +320,4 @@ module.exports = {
   getUserReviewsController,
   updateProfileController,
   changePasswordController,
-
-
 };

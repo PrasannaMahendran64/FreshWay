@@ -23,7 +23,7 @@ const handleLogin = async (e) => {
   setLoading(true);
 
   try {
-    const { data } = await axios.post("http://localhost:4000/login", { email, password });
+    const { data } = await axios.post("/api/login", { email, password });
 
     // ✅ Updated condition to handle different backend responses
     if (data) {

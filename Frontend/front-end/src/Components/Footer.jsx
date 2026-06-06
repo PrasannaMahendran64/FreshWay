@@ -27,12 +27,12 @@ const Footer = () => {
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0a1034] leading-tight">
             Get Your Daily Needs From Our
             <br />
-            FreshWay
+            Freshway
           </h2>
           <p className="mt-4 text-[#3c3c3c] text-sm sm:text-base md:text-lg leading-relaxed">
             There are many products you will find in our shop, Choose your
           
-            daily necessary product from our FreshWay App and get some
+            daily necessary product from our Freshway app and get some
             
             special offers.
           </p>
@@ -88,7 +88,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  flex flex-wrap justify-center sm:justify-between gap-4 text-sm text-[#0a1034]">
           <div className="flex items-center gap-4 border-r border-gray-300 pr-4">
             <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/40C057/free-shipping.png" alt="free-shipping"/>
-            <span className="font-semibold">Free Shipping From €500.00</span>
+            <span className="font-semibold">Free shipping from Rs. 500.00</span>
           </div>
           <div className="flex items-center gap-2 border-r border-gray-300 pr-4">
            <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/40C057/hotline.png" alt="hotline"/>
@@ -196,7 +196,7 @@ const Footer = () => {
 
         {/* Bottom bar */}
         <div className="bg-gray-100 text-center py-4 text-xs sm:text-sm text-gray-500">
-          © 2025 FreshWay. All rights reserved.
+          Copyright 2026 Freshway. All rights reserved.
         </div>
       </footer>
     </>

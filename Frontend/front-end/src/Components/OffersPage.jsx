@@ -13,7 +13,7 @@ export default function OffersPage() {
   // Fetch available coupons from backend
   const fetchCoupons = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/getcoupon");
+      const res = await axios.get("/api/getcoupon");
       setCoupons(res.data.data || res.data);
     } catch (err) {
       console.error(err);
@@ -63,7 +63,7 @@ export default function OffersPage() {
               >
                 <div className="flex items-center gap-4">
                   <img
-                    src={`http://localhost:4000/files/${coupon.image}` || "https://i.ibb.co/3yB2JXp/default.png"}
+                    src={`/api/files/${coupon.image}` || "https://i.ibb.co/3yB2JXp/default.png"}
                     alt={coupon.title || coupon.code}
                     className="w-16 h-16 rounded-lg shadow-md"
                   />

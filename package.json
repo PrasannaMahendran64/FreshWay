@@ -1,0 +1,11 @@
+{
+  "name": "freshway",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --prefix Frontend/front-end && npm run build --prefix Admin/my-project && node scripts/copy-admin-dist.js",
+    "dev:api": "npm run dev --prefix Backend",
+    "dev:web": "npm run dev --prefix Frontend/front-end",
+    "dev:admin": "npm run dev --prefix Admin/my-project"
+  }
+}

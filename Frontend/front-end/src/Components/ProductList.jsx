@@ -17,7 +17,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/get-product");
+        const res = await axios.get("/api/get-product");
         const data = Array.isArray(res.data.data) ? res.data.data : [];
         setProducts(data.slice(0, 4)); // ✅ show only first 4 products
       } catch (error) {

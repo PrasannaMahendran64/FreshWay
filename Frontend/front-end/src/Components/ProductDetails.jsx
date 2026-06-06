@@ -50,7 +50,7 @@ const ProductModal = ({ product, setOpenQuickView, cartItems, addToCart, decreas
           {/* Image */}
           <div className="w-full md:w-1/2 flex items-center justify-center bg-white">
             <img
-              src={`http://localhost:4000/files/${product.image}`}
+              src={`/api/files/${product.image}`}
               alt={product.name}
               className="w-full h-96 object-contain"
             />
@@ -170,13 +170,13 @@ export const ProductDetails = () => {
 
   useEffect(() => {
     if (!slug) return;
-    axios.get(`http://localhost:4000/get-products/${slug}`)
+    axios.get(`/api/get-products/${slug}`)
       .then(res => {
         const productData = res.data.data;
         setProduct(productData);
         setLoading(false);
 
-        axios.get(`http://localhost:4000/product/${productData._id}`)
+        axios.get(`/api/product/${productData._id}`)
           .then(res => setReviews(res.data.data))
           .catch(err => console.error("Error fetching reviews:", err));
       })
@@ -198,7 +198,7 @@ export const ProductDetails = () => {
       <div className="space-y-6">
         <div className="bg-gray-50 rounded-2xl flex items-center justify-center p-6">
           <img
-            src={`http://localhost:4000/files/${product.image}`}
+            src={`/api/files/${product.image}`}
             alt={product.name}
             className="w-full max-h-[400px] object-contain"
           />

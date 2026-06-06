@@ -50,7 +50,7 @@ export default function MyAccountLayout() {
       <div className="sticky top-0 h-screen w-72 bg-white shadow-md p-6 border-r border-gray-100 overflow-y-auto">
         <div className="flex flex-col items-center mb-6">
           <img
-            src={`http://localhost:4000/files/${user.profileImage}`|| "/default-avatar.png"}
+            src={`/api/files/${user.profileImage}`|| "/default-avatar.png"}
             alt="profile"
             className="h-20 w-20 rounded-full object-cover mb-3"
           />

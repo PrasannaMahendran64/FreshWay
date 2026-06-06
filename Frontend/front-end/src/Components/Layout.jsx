@@ -7,6 +7,7 @@ import CartWidget from "./Cart";
 const Layout = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [discount, setDiscount] = useState(0);
 
   // ✅ Add product to cart
   const addToCart = (product) => {
@@ -51,9 +52,12 @@ const Layout = () => {
         <Outlet
           context={{
             cartItems,
+            setCartItems,
             addToCart,
             decreaseFromCart,
             removeFromCart,
+            discount,
+            setDiscount,
           }}
         />
       </div>

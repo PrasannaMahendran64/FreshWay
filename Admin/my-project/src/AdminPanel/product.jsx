@@ -31,7 +31,7 @@ export default function ProductsPage() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:4000/get-product");
+      const res = await axios.get("/api/get-product");
       setProducts(res.data.data || res.data);
     } catch (err) {
       toast.error("Failed to fetch products");
@@ -42,7 +42,7 @@ export default function ProductsPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/get-categories");
+      const res = await axios.get("/api/get-categories");
       setCategories(res.data.data || res.data);
     } catch (err) {
       toast.error("Failed to fetch categories");
@@ -79,13 +79,13 @@ export default function ProductsPage() {
     try {
       if (editingProduct) {
         await axios.put(
-          `http://localhost:4000/update-product/${editingProduct._id}`,
+          `/api/update-product/${editingProduct._id}`,
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
         toast.success("Product updated successfully");
       } else {
-        await axios.post("http://localhost:4000/create-product", formData, {
+        await axios.post("/api/create-product", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Product created successfully");
@@ -100,7 +100,7 @@ export default function ProductsPage() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      await axios.delete(`http://localhost:4000/delete-product/${id}`);
+      await axios.delete(`/api/delete-product/${id}`);
       toast.success("Product deleted successfully");
       fetchProducts();
     } catch (err) {
@@ -146,7 +146,7 @@ export default function ProductsPage() {
                   <td className="py-2 px-4">
                     {p.image ? (
                       <img
-                        src={`http://localhost:4000/files/${p.image}`}
+                        src={`/api/files/${p.image}`}
                         alt={p.name}
                         className="w-12 h-12 object-cover rounded"
                       />

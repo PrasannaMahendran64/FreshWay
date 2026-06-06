@@ -12,7 +12,7 @@ export default function OrderInvoicePage() {
 
   const fetchOrder = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/get-order/${orderId}`);
+      const res = await axios.get(`/api/get-order/${orderId}`);
       setOrder(res.data.data || res.data);
     } catch (err) {
       console.error(err);
@@ -104,7 +104,7 @@ export default function OrderInvoicePage() {
                 <tr key={item._id || index} className="border-b">
                   <td className="py-2 px-2 text-center">
                     {item.image ? (
-                      <img src={`http://localhost:4000/files/${item.image}`} alt={item.name} className="w-12 h-12 object-cover mx-auto" />
+                      <img src={`/api/files/${item.image}`} alt={item.name} className="w-12 h-12 object-cover mx-auto" />
                     ) : (
                       "N/A"
                     )}

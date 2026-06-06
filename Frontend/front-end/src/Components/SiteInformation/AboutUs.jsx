@@ -20,7 +20,7 @@ const AboutUs = () => {
         {/* Left Content */}
         <div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Welcome to our <span className="text-green-600">FreshWay</span> shop
+            Welcome to our <span className="text-green-600">Freshway</span> shop
           </h2>
           <p className="text-gray-600 leading-relaxed">
             Holistically seize parallel metrics and functional ROI. Seamlessly revolutionize

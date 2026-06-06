@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
     }
 
     try {
-      const { data } = await axios.post("http://localhost:4000/login", {
+      const { data } = await axios.post("/api/login", {
         email,
         password,
       });

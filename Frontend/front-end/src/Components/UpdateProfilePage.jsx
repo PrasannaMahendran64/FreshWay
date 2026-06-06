@@ -53,7 +53,7 @@ export default function UpdateProfilePage() {
         if (formData[key]) data.append(key, formData[key]);
       }
 
-      const res = await axios.put(`http://localhost:4000/update-profile/${user._id}`, data, {
+      const res = await axios.put(`/api/update-profile/${user._id}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -82,7 +82,7 @@ export default function UpdateProfilePage() {
         <div className="flex flex-col items-center gap-3">
           <div className="relative w-32 h-32">
             <img
-              src={`http://localhost:4000/files/${user.profileImage}` || "/default-avatar.png"}
+              src={`/api/files/${user.profileImage}` || "/default-avatar.png"}
               alt="Profile Preview"
               className="w-32 h-32 rounded-full object-cover border-4 border-green-100"
             />

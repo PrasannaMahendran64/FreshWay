@@ -26,7 +26,7 @@ export default function AccountDashboard() {
       setLoading(true);
 
       // Fetch orders for the user
-      const ordersRes = await axios.get(`http://localhost:4000/user-order/${userId}`);
+      const ordersRes = await axios.get(`/api/user-order/${userId}`);
       const orders = ordersRes.data?.data || [];
 
       // Count by orderStatus
@@ -36,7 +36,7 @@ export default function AccountDashboard() {
       const cancelled = orders.filter((o) => o.orderStatus === "Cancelled").length;
 
       // Fetch user reviews
-      const reviewsRes = await axios.get(`http://localhost:4000/user-review/${userId}`);
+      const reviewsRes = await axios.get(`/api/user-review/${userId}`);
       const reviews = reviewsRes.data?.data || [];
 
       setStats({

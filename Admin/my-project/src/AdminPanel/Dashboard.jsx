@@ -20,9 +20,9 @@ export default function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      const users = await axios.get("http://localhost:4000/get-users");
-      const products = await axios.get("http://localhost:4000/get-product");
-      const orders = await axios.get("http://localhost:4000/get-orders");
+      const users = await axios.get("/api/get-users");
+      const products = await axios.get("/api/get-product");
+      const orders = await axios.get("/api/get-orders");
 
       const revenue = orders.data.data?.reduce((acc, o) => acc + o.totalPrice, 0);
 

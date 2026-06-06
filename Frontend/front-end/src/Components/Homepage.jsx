@@ -17,7 +17,7 @@ const HeroSection = () => {
   // Fetch coupons from backend
   const fetchCoupons = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/getcoupon");
+      const res = await axios.get("/api/getcoupon");
       setCoupons(res.data.data || []);
     } catch (err) {
       console.error(err);
@@ -91,7 +91,7 @@ const HeroSection = () => {
           className="bg-white/70 backdrop-blur-lg border border-gray-200 rounded-3xl p-8 shadow-xl flex flex-col justify-between"
         >
           <h3 className="text-2xl font-bold text-center text-gray-800 border-b pb-4 mb-6">
-            🎟️ Latest Super Discount Coupons
+            Latest Freshway Coupons
           </h3>
 
           {coupons.length === 0 ? (
@@ -109,7 +109,7 @@ const HeroSection = () => {
                     <img
                       src={
                         coupon.image
-                          ? `http://localhost:4000/files/${coupon.image}`
+                          ? `/api/files/${coupon.image}`
                           : "https://i.ibb.co/3yB2JXp/default.png"
                       }
                       alt={coupon.title || coupon.code}
@@ -117,7 +117,7 @@ const HeroSection = () => {
                     />
                     <div>
                       <p className="font-bold text-green-600 text-lg leading-none">
-                        ₹{coupon.discount} OFF
+                        Rs. {coupon.discount} OFF
                       </p>
                       <p className="text-sm text-gray-600">{coupon.title || "Special Offer"}</p>
                       <span

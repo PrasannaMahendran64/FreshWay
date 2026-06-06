@@ -15,7 +15,7 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:4000/forget", { email });
+      await axios.post("/api/forget", { email });
       toast.success("✅ OTP sent to your email!", { position: "top-right" });
       setLoading(false);
       // Navigate to Reset Password page and pass email as state

@@ -14,7 +14,7 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:4000/get-categories");
+      const res = await axios.get("/api/get-categories");
       setCategories(res.data.data || res.data);
     } catch (err) {
       console.error(err);
@@ -52,11 +52,11 @@ export default function CategoriesPage() {
 
       if (selectedCategory) {
         // Update
-        await axios.put(`http://localhost:4000/update-categories/${selectedCategory._id}`, data);
+        await axios.put(`/api/update-categories/${selectedCategory._id}`, data);
         toast.success("Category updated");
       } else {
         // Create
-        await axios.post("http://localhost:4000/create-categories", data);
+        await axios.post("/api/create-categories", data);
         toast.success("Category added");
       }
       setModalOpen(false);
@@ -70,7 +70,7 @@ export default function CategoriesPage() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this category?")) return;
     try {
-      await axios.delete(`http://localhost:4000/delete-categories/${id}`);
+      await axios.delete(`/api/delete-categories/${id}`);
       toast.success("Category deleted");
       fetchCategories();
     } catch (err) {
@@ -112,7 +112,7 @@ export default function CategoriesPage() {
                   <td className="py-2 px-4">
                     {cat.image ? (
                       <img
-                        src={`http://localhost:4000/files/${cat.image}`}
+                        src={`/api/files/${cat.image}`}
                         alt={cat.name}
                         className="w-12 h-12 object-cover rounded"
                       />

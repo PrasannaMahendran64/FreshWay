@@ -13,7 +13,7 @@ export default function Users() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/get-users");
+      const res = await axios.get("/api/get-users");
       setUsers(res.data);
     } catch (err) {
       console.error(err);
@@ -23,7 +23,7 @@ export default function Users() {
 
   const handlePromote = async (email) => {
     try {
-      await axios.put(`http://localhost:4000/update-admin`, { email });
+      await axios.put(`/api/update-admin`, { email });
       toast.success("User promoted to admin");
       fetchUsers();
     } catch (err) {
@@ -34,7 +34,7 @@ export default function Users() {
 
   const handleRemoveAdmin = async (email) => {
     try {
-      await axios.put(`http://localhost:4000/remove-admin`, { email });
+      await axios.put(`/api/remove-admin`, { email });
       toast.success("Admin rights removed");
       fetchUsers();
     } catch (err) {

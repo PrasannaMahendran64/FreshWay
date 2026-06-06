@@ -18,7 +18,7 @@ export default function OrdersPage() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:4000/get-orders");
+      const res = await axios.get("/api/get-orders");
       setOrders(res.data.data || []);
     } catch (err) {
       toast.error("Failed to fetch orders");
@@ -36,7 +36,7 @@ export default function OrdersPage() {
   const updateStatus = async () => {
     if (!selectedOrder) return;
     try {
-      await axios.put(`http://localhost:4000/update-order/${selectedOrder._id}`, { orderStatus: newStatus });
+      await axios.put(`/api/update-order/${selectedOrder._id}`, { orderStatus: newStatus });
       setOrders((prev) =>
         prev.map((o) => (o._id === selectedOrder._id ? { ...o, orderStatus: newStatus } : o))
       );
@@ -50,7 +50,7 @@ export default function OrdersPage() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this order?")) return;
     try {
-      await axios.delete(`http://localhost:4000/delete-order/${id}`);
+      await axios.delete(`/api/delete-order/${id}`);
       setOrders((prev) => prev.filter((o) => o._id !== id));
       toast.success("Order deleted successfully!");
     } catch {
@@ -191,7 +191,7 @@ export default function OrdersPage() {
                       <td className="py-2 px-4">
                         {item.image ? (
                           <img
-                            src={`http://localhost:4000/files/${item.image}`}
+                            src={`/api/files/${item.image}`}
                             alt={item.name}
                             className="w-12 h-12 object-cover rounded"
                           />

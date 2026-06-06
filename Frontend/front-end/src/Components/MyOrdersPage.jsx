@@ -33,7 +33,7 @@ export default function MyOrdersPage() {
   const fetchOrders = async (userId) => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:4000/user-order/${userId}`);
+      const res = await axios.get(`/api/user-order/${userId}`);
       setOrders(res.data?.data || []);
     } catch (err) {
       console.error(err);
@@ -135,7 +135,7 @@ export default function MyOrdersPage() {
                             <img
                               src={
                                 item.image
-                                  ? `http://localhost:4000/files/${item.image}`
+                                  ? `/api/files/${item.image}`
                                   : "https://via.placeholder.com/40?text=No+Image"
                               }
                               alt={item.name}

@@ -22,7 +22,7 @@ const CartWidget = ({ open, setOpen, cartItems, removeFromCart }) => {
             </p>
           </div>
           <div className="bg-green-700 text-white text-center py-2 font-semibold rounded-b-lg">
-            ₹{subtotal.toFixed(2)}
+            Rs. {subtotal.toFixed(2)}
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@ const CartWidget = ({ open, setOpen, cartItems, removeFromCart }) => {
                 className="text-gray-600 hover:text-gray-900"
                 onClick={() => setOpen(false)}
               >
-                ✕
+                X
               </button>
             </div>
 
@@ -61,7 +61,7 @@ const CartWidget = ({ open, setOpen, cartItems, removeFromCart }) => {
                       <img
                         src={
                           item.image
-                            ? `http://localhost:4000/files/${item.image}`
+                            ? `/api/files/${item.image}`
                             : "/no-image.png"
                         }
                         alt={item.name}
@@ -72,7 +72,7 @@ const CartWidget = ({ open, setOpen, cartItems, removeFromCart }) => {
                           {item.name}
                         </h4>
                         <p className="text-sm text-gray-500">
-                          ₹{item.price} × {item.qty}
+                          Rs. {item.price} x {item.qty}
                         </p>
                       </div>
                       <button
@@ -91,7 +91,7 @@ const CartWidget = ({ open, setOpen, cartItems, removeFromCart }) => {
             <div className="border-t px-6 py-4">
               <div className="flex justify-between text-sm mb-3">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-semibold">₹{subtotal.toFixed(2)}</span>
+                <span className="font-semibold">Rs. {subtotal.toFixed(2)}</span>
               </div>
               <p className="text-xs text-gray-400 mb-3">
                 Shipping and taxes calculated at checkout.

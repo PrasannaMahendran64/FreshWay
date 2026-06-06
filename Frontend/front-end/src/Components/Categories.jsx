@@ -13,7 +13,7 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:4000/get-categories");
+        const res = await fetch("/api/get-categories");
         const data = await res.json();
 
         if (Array.isArray(data)) {
@@ -68,7 +68,7 @@ const Categories = () => {
                 <div className="w-18 h-18 rounded-full shadow-md flex items-center justify-center overflow-hidden bg-white transition-transform duration-300 ease-in-out hover:scale-110">
                   {cat.image ? (
                     <img
-                      src={`http://localhost:4000/files/${cat.image}`}
+                      src={`/api/files/${cat.image}`}
                       alt={cat.name}
                       className="object-cover"
                     />

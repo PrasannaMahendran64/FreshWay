@@ -20,7 +20,7 @@ export default function ProfilePage() {
         {/* Profile Picture */}
         <div className="relative">
           <img
-            src={`http://localhost:4000/files/${user.profileImage}`|| "/default-avatar.png"}
+            src={`/api/files/${user.profileImage}`|| "/default-avatar.png"}
             alt="Profile"
             className="w-32 h-32 rounded-full border-4 border-green-100 object-cover"
           />

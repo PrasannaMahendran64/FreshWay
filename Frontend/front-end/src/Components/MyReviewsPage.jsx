@@ -23,7 +23,7 @@ export default function MyReviewsPage() {
 
   const fetchReviews = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:4000/user-review/${id}`);
+      const res = await axios.get(`/api/user-review/${id}`);
       setReviews(res.data?.data || []);
     } catch (err) {
       console.error(err);

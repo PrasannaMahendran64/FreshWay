@@ -23,8 +23,8 @@ const TermsCondition = () => {
 
                 <div className="px-4 md:px-10 mt-6 md:mt-10 text-justify text-sm md:text-base leading-relaxed ">
 
-                    <h1 className="font-bold">Welcome to FreshWay!</h1>
-                    <p>These terms and conditions outline the rules and regulations for the use of FreshWay's Website, located at https://FreshWay.com/. By accessing this website we assume you accept these terms and conditions. Do not continue to use FreshWay if you do not agree to take all of the terms and conditions stated on this page.</p>
+                    <h1 className="font-bold">Welcome to Freshway!</h1>
+                    <p>These terms and conditions outline the rules and regulations for the use of Freshway's Website, located at https://Freshway.com/. By accessing this website we assume you accept these terms and conditions. Do not continue to use Freshway if you do not agree to take all of the terms and conditions stated on this page.</p>
                     <br />
                     <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: Client, You and Your refers to you, the person log on this website and compliant to the Company’s terms and conditions. The Company, refers to our CompanyPartParties or Us refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.
                     </p><br />
@@ -32,10 +32,10 @@ const TermsCondition = () => {
 
 
                     <h1 className="font-bold">Cookies</h1>
-                    <p>We employ the use of cookies. By accessing FreshWay, you agreed to use cookies in agreement with the FreshWay's Privacy Policy. Most interactive websites use cookies to let us retrieve the user’s details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.
+                    <p>We employ the use of cookies. By accessing Freshway, you agreed to use cookies in agreement with the Freshway's Privacy Policy. Most interactive websites use cookies to let us retrieve the user’s details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.
                     </p><br />
                     <h1 className="font-bold">License </h1>
-                    <p>Unless otherwise stated, FreshWay and/or its licensors own the intellectual property rights for all material on FreshWay. All intellectual property rights are reserved. You may access this from FreshWay for your own personal use subjected to restrictions set in these terms and conditions.This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the Terms And Conditions Generator. <span className="font-bold">You must not:</span>
+                    <p>Unless otherwise stated, Freshway and/or its licensors own the intellectual property rights for all material on Freshway. All intellectual property rights are reserved. You may access this from Freshway for your own personal use subjected to restrictions set in these terms and conditions.This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the Terms And Conditions Generator. <span className="font-bold">You must not:</span>
                     </p><br />
                     <p>
                         1. Identifiers (e.g. name, mailing address, email address, phone number, credit/debit card number)
@@ -45,7 +45,7 @@ const TermsCondition = () => {
                         5. Geo location data (e.g. latitude or longitude)
                         6. Audio, electronic, visual, or similar information (e.g. recording of Guest service calls)
                         7. Inferences drawn from any of the above (e.g. preferences or characteristics)
-                        Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. FreshWay does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of FreshWay,its agents and/or affiliates. Comments reflect the views and opinions of the person who post their views and opinions. To the extent permitted by applicable laws, FreshWay shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.
+                        Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. Freshway does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of Freshway,its agents and/or affiliates. Comments reflect the views and opinions of the person who post their views and opinions. To the extent permitted by applicable laws, Freshway shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.
                     </p><br />
 
                     <h1 className="font-bold">Content Liability</h1>

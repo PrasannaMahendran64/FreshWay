@@ -23,7 +23,7 @@ const CategoryProductsPage = () => {
       setError(null);
 
       try {
-        const res = await axios.get(`http://localhost:4000/products/category/${slug}`);
+        const res = await axios.get(`/api/products/category/${slug}`);
         console.log("Category API Response:", res.data);
 
         // ✅ Uniform response: expect data inside res.data.data

@@ -39,7 +39,7 @@ export default function ReviewsPage() {
   const fetchReviews = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:4000/get-reviews");
+      const res = await axios.get("/api/get-reviews");
       setReviews(res.data.data || res.data);
     } catch (err) {
       console.error(err);
@@ -51,7 +51,7 @@ export default function ReviewsPage() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/get-product");
+      const res = await axios.get("/api/get-product");
       setProducts(res.data.data || res.data);
     } catch (err) {
       console.error(err);
@@ -87,12 +87,12 @@ export default function ReviewsPage() {
     try {
       if (selectedReview) {
         await axios.put(
-          `http://localhost:4000/update-review/${selectedReview._id}`,
+          `/api/update-review/${selectedReview._id}`,
           formData
         );
         toast.success("Review updated");
       } else {
-        await axios.post("http://localhost:4000/create-review", formData);
+        await axios.post("/api/create-review", formData);
         toast.success("Review added");
       }
       setModalOpen(false);
@@ -106,7 +106,7 @@ export default function ReviewsPage() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
     try {
-      await axios.delete(`http://localhost:4000/delete-review/${id}`);
+      await axios.delete(`/api/delete-review/${id}`);
       toast.success("Review deleted");
       fetchReviews();
     } catch (err) {

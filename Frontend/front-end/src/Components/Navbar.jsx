@@ -6,6 +6,15 @@ import {
   Home,
   LayoutGrid,
   LogOut,
+  Fish,
+  Apple,
+  ChefHat,
+  Cookie,
+  PawPrint,
+  HeartPulse,
+  Milk,
+  CupSoda,
+  Sparkles,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useState, useEffect, useRef } from "react";
@@ -17,16 +26,16 @@ const Navbar = ({ cartItems, onCartClick }) => {
   const cartCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
 
   const categories = [
-    { name: "Fish & Meat", icon: "🐟", slug: "fish-meat" },
-    { name: "Fruits & Vegetable", icon: "🥬", slug: "fruits-vegetable" },
-    { name: "Cooking Essentials", icon: "🍳", slug: "cooking-essentials" },
-    { name: "Biscuits & Cakes", icon: "🍪", slug: "biscuits-cakes" },
-    { name: "Household Tools", icon: "🧴", slug: "household-tools" },
-    { name: "Pet Care", icon: "🐕", slug: "pet-care" },
-    { name: "Beauty & Healths", icon: "💄", slug: "beauty-healths" },
-    { name: "Jam & Jelly", icon: "🍯", slug: "jam-jelly" },
-    { name: "Milk & Dairy", icon: "🥛", slug: "milk-dairy" },
-    { name: "Drinks", icon: "🥤", slug: "drinks" },
+    { name: "Fish & Meat", icon: Fish, slug: "fish-meat" },
+    { name: "Fruits & Vegetables", icon: Apple, slug: "fruits-vegetable" },
+    { name: "Cooking Essentials", icon: ChefHat, slug: "cooking-essentials" },
+    { name: "Biscuits & Cakes", icon: Cookie, slug: "biscuits-cakes" },
+    { name: "Household Tools", icon: Home, slug: "household-tools" },
+    { name: "Pet Care", icon: PawPrint, slug: "pet-care" },
+    { name: "Beauty & Health", icon: HeartPulse, slug: "beauty-healths" },
+    { name: "Jam & Jelly", icon: Sparkles, slug: "jam-jelly" },
+    { name: "Milk & Dairy", icon: Milk, slug: "milk-dairy" },
+    { name: "Drinks", icon: CupSoda, slug: "drinks" },
   ];
 
   const [open, setOpen] = useState(false); // for desktop categories
@@ -171,16 +180,19 @@ const Navbar = ({ cartItems, onCartClick }) => {
               </button>
               {open && (
                 <div className="absolute left-0 mt-2 w-56 bg-white shadow-lg rounded-lg py-2 z-50">
-                  {categories.map((cat, index) => (
+                  {categories.map((cat, index) => {
+                    const CategoryIcon = cat.icon;
+                    return (
                     <button
                       key={index}
                       onClick={() => handleCategoryClick(cat.slug)}
                       className="flex w-full text-left items-center gap-3 px-4 py-2 hover:bg-gray-100 text-gray-700"
                     >
-                      <span className="text-xl">{cat.icon}</span>
+                      <CategoryIcon className="w-5 h-5 text-green-600" />
                       <span>{cat.name}</span>
                     </button>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -230,16 +242,19 @@ const Navbar = ({ cartItems, onCartClick }) => {
               <div className="bg-white w-3/4 sm:w-1/2 h-full shadow-lg p-4 overflow-y-auto">
                 <h2 className="text-lg font-semibold mb-4">Categories</h2>
                 <div className="space-y-3">
-                  {categories.map((cat, index) => (
+                  {categories.map((cat, index) => {
+                    const CategoryIcon = cat.icon;
+                    return (
                     <button
                       key={index}
                       onClick={() => handleCategoryClick(cat.slug)}
                       className="flex w-full text-left items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 text-gray-800"
                     >
-                      <span className="text-xl">{cat.icon}</span>
+                      <CategoryIcon className="w-5 h-5 text-green-600" />
                       <span>{cat.name}</span>
                     </button>
-                  ))}
+                    );
+                  })}
                 </div>
                 <button
                   onClick={() => setMobileCategoriesOpen(false)}

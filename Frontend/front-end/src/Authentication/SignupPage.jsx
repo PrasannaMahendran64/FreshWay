@@ -16,7 +16,7 @@ export default function RegisterPage() {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post("http://localhost:4000/register", {
+      const { data } = await axios.post("/api/register", {
         name,
         email,
         mobilenumber,
@@ -280,7 +280,7 @@ export default function RegisterPage() {
 //       return;
 //     }
 //     try {
-//       await axios.post("http://localhost:4000/register", formData)
+//       await axios.post("/api/register", formData)
 //       toast.success("🎉 Signup successful!");
 //       setFormData({
 //         name: "",

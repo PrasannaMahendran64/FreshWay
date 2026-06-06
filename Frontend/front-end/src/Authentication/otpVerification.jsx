@@ -46,7 +46,7 @@
 //     }
 //     setLoading(true);
 //     try {
-//       const { data } = await axios.post("http://localhost:4000/verifyotp", { email, otp: enteredOtp });
+//       const { data } = await axios.post("/api/verifyotp", { email, otp: enteredOtp });
 //       if (data?.data?.token) {
 //         localStorage.setItem("token", data.data.token);
 //         localStorage.setItem("user", JSON.stringify(data.data.user));

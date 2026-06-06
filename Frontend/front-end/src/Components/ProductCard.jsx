@@ -35,7 +35,7 @@ const ProductCard = ({ product, cartItems, addToCart, decreaseFromCart }) => {
           <div className="w-full h-40 overflow-hidden rounded-md">
             {product.image ? (
               <img
-                src={`http://localhost:4000/files/${product.image}`}
+                src={`/api/files/${product.image}`}
                 alt={product.name || "Product Image"}
                 className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
               />
@@ -73,7 +73,7 @@ const ProductCard = ({ product, cartItems, addToCart, decreaseFromCart }) => {
         </div>
 
         {/* Price */}
-        <p className="text-lg font-bold text-gray-900 mt-2">₹{product.price || 0}</p>
+        <p className="text-lg font-bold text-gray-900 mt-2">Rs. {product.price || 0}</p>
 
         {/* Add to Cart / Counter */}
         <div className="mt-auto flex justify-end">

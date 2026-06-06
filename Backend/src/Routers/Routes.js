@@ -20,7 +20,7 @@ const adminController = require("../Controllers/AdminController")
 
 const CouponController =require("../Controllers/CouponController")
 
-const Upload = require('../MiddleWare/FIleStorage')
+const Upload = require('../MiddleWare/FileStorage')
 const { createRazorpayOrder, verifyRazorpayPayment } = require('../Controllers/RazorpayController')
 
 

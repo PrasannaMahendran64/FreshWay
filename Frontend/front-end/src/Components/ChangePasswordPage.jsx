@@ -36,7 +36,7 @@ export default function ChangePasswordPage() {
 
     try {
       setLoading(true);
-      await axios.put(`http://localhost:4000/change-password/${user._id}`, {
+      await axios.put(`/api/change-password/${user._id}`, {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
       });

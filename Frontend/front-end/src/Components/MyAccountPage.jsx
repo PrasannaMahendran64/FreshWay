@@ -8,26 +8,38 @@ import {
   Settings,
   Lock,
   LogOut,
+  Heart,
+  MapPin,
 } from "lucide-react";
-import { getUserFromStorage } from "./ProtectedRoute";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/slices/authSlice";
+import { clearCartState } from "../redux/slices/cartSlice";
+import { clearOrderState } from "../redux/slices/orderSlice";
+import { clearWishlistState } from "../redux/slices/wishlistSlice";
+import { clearAddressState } from "../redux/slices/addressSlice";
+import { clearUserState } from "../redux/slices/userSlice";
 import { toast } from "react-toastify";
 
 export default function MyAccountLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const currentUser = getUserFromStorage();
-    if (!currentUser) {
+    if (!isAuthenticated) {
       navigate("/login");
-    } else {
-      setUser(currentUser);
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    dispatch(clearCartState());
+    dispatch(clearOrderState());
+    dispatch(clearWishlistState());
+    dispatch(clearAddressState());
+    dispatch(clearUserState());
+    dispatch(logout());
     toast.info("Logged out successfully");
     navigate("/");
   };
@@ -37,6 +49,8 @@ export default function MyAccountLayout() {
   const sidebarItems = [
     { icon: <Grid size={16} />, text: "Dashboard", path: "/myaccount" },
     { icon: <ShoppingCart size={16} />, text: "My Orders", path: "/myaccount/myorders" },
+    { icon: <Heart size={16} />, text: "Wishlist", path: "/myaccount/wishlist" },
+    { icon: <MapPin size={16} />, text: "Saved Addresses", path: "/myaccount/address" },
     { icon: <Star size={16} />, text: "My Reviews", path: "/myaccount/myreviews" },
     { icon: <User size={16} />, text: "My Account", path: "/myaccount/myprofile" },
     { icon: <Settings size={16} />, text: "Update Profile", path: "/myaccount/myupdate-profile" },

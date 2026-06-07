@@ -14,6 +14,11 @@ const createRazorpayOrder = async (req, res) => {
     const order = await OrderModel.findById(orderId);
     if (!order) return res.status(404).json({ message: "Order not found" });
 
+    // Verify order ownership
+    if (order.user.toString() !== req.user.id && !req.user.isAdmin) {
+      return res.status(403).json({ message: "Access denied: You cannot make payment for this order" });
+    }
+
     const options = {
       amount: order.totalPrice * 100, // in paise
       currency: "INR",
@@ -49,6 +54,17 @@ const verifyRazorpayPayment = async (req, res) => {
       return res.status(400).json({ message: "Missing payment details" });
     }
 
+    // Fetch order first to check ownership
+    const order = await OrderModel.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Verify ownership or admin status
+    if (order.user.toString() !== req.user.id && !req.user.isAdmin) {
+      return res.status(403).json({ message: "Access denied: You cannot verify payment for this order" });
+    }
+
     const generated_signature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(razorpay_order_id + "|" + razorpay_payment_id)
@@ -58,13 +74,11 @@ const verifyRazorpayPayment = async (req, res) => {
       return res.status(400).json({ message: "Invalid signature" });
     }
 
-    const updatedOrder = await OrderModel.findByIdAndUpdate(
-      orderId,
-      { paymentStatus: "Paid", paymentId: razorpay_payment_id },
-      { new: true }
-    );
+    order.isPaid = true;
+    order.paidAt = new Date();
+    await order.save();
 
-    res.status(200).json({ message: "Payment verified", data: updatedOrder });
+    res.status(200).json({ message: "Payment verified", data: order });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Payment verification failed" });

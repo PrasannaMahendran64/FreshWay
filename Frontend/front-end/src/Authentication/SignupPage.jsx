@@ -1,9 +1,12 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { User, Mail, Phone, Lock } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../redux/slices/authSlice";
+import { fetchCart } from "../redux/slices/cartSlice";
+import { fetchWishlist } from "../redux/slices/wishlistSlice";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -11,25 +14,31 @@ export default function RegisterPage() {
   const [mobilenumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!name || !email || !mobilenumber || !password) {
+      toast.error("❌ Please fill in all fields.");
+      return;
+    }
 
-    try {
-      const { data } = await axios.post("/api/register", {
-        name,
-        email,
-        mobilenumber,
-        password,
-      });
-
-      toast.success("✅ Registration successful! Redirecting...", { position: "top-right" });
-      console.log("Register Response:", data);
-
-      setTimeout(() => navigate("/login"), 2000);
-    } catch (err) {
-      console.error("Register error:", err.response?.data || err.message);
-      toast.error(`❌ ${err.response?.data?.message || "Something went wrong"}`, { position: "top-right" });
+    const resultAction = await dispatch(registerUser({ name, email, mobilenumber, password }));
+    if (registerUser.fulfilled.match(resultAction)) {
+      toast.success("✅ Registration successful!");
+      dispatch(fetchCart());
+      dispatch(fetchWishlist());
+      navigate("/");
+    } else {
+      toast.error(resultAction.payload || "❌ Registration failed!");
     }
   };
 

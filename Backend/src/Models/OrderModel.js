@@ -10,7 +10,7 @@ const OrderItemSchema = new mongoose.Schema({
 });
 
 const OrderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   orderItems: [OrderItemSchema],
   shippingAddress: {
     address: String,
@@ -37,6 +37,10 @@ const OrderSchema = new mongoose.Schema({
   isDelivered: { type: Boolean, default: false },
   deliveredAt: Date
 }, { timestamps: true, collection: "Order" });
+
+OrderSchema.index({ user: 1 });
+OrderSchema.index({ orderStatus: 1 });
+OrderSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model('Order', OrderSchema);
   

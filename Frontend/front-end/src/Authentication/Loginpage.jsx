@@ -1,59 +1,47 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, clearAuthError } from "../redux/slices/authSlice";
+import { fetchCart } from "../redux/slices/cartSlice";
+import { fetchWishlist } from "../redux/slices/wishlistSlice";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  if (!email || !password) {
-    toast.error("❌ Please fill in all fields.");
-    return;
-  }
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
 
-  setLoading(true);
-
-  try {
-    const { data } = await axios.post("/api/login", { email, password });
-
-    // ✅ Updated condition to handle different backend responses
-    if (data) {
-      const user = data.user || data?.data?.user; // handle nested response
-      const token = data.token || data?.data?.token;
-
-      if (user && token) {
-        // Persist login
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", token);
-
-        // Dispatch event for Navbar update
-        window.dispatchEvent(new Event("login"));
-
-        toast.success("✅ Login successful!");
-        navigate("/"); // Redirect to homepage
-      } else {
-        // Backend returned data but no user/token
-        toast.error(data?.message || "❌ Login failed! No user/token returned.");
-      }
-    } else {
-      // No data returned
-      toast.error("❌ Login failed! No response from server.");
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
     }
-  } catch (err) {
-    toast.error(err.response?.data?.message || "❌ Login failed!");
-  } finally {
-    setLoading(false);
-  }
-};
+  }, [isAuthenticated, navigate]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error("❌ Please fill in all fields.");
+      return;
+    }
+
+    const resultAction = await dispatch(loginUser({ email, password }));
+    if (loginUser.fulfilled.match(resultAction)) {
+      toast.success("✅ Login successful!");
+      // Fetch cart and wishlist right away for the logged-in user
+      dispatch(fetchCart());
+      dispatch(fetchWishlist());
+      navigate("/");
+    } else {
+      toast.error(resultAction.payload || "❌ Login failed!");
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-100 via-white to-green-200 px-4">

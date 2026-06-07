@@ -39,9 +39,7 @@ app.use(async (req, res, next) => {
 app.use("/api", router);
 app.use(router);
 
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ message: err.message || "Server error" });
-});
+const errorMiddleware = require("./MiddleWare/errorMiddleware");
+app.use(errorMiddleware);
 
 module.exports = app;

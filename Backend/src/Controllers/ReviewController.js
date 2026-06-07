@@ -4,9 +4,10 @@ const ReviewModel = require("../Models/ReviewModel");
 // 🔹 Create Review
 const createReview = async (req, res) => {
   try {
-    const { product, user, rating, comment } = req.body;
+    const { product, rating, comment } = req.body;
+    const user = req.user.id; // Securely use authenticated user ID
 
-    if (!product || !user || !rating || !comment) {
+    if (!product || !rating || !comment) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -78,14 +79,32 @@ const getReviewsByProduct = async (req, res) => {
 const updateReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
-    const updateData = {};
-    if (rating) updateData.rating = rating;
-    if (comment) updateData.comment = comment;
 
-    const updated = await ReviewModel.findByIdAndUpdate(req.params.id, updateData, { new: true });
-    if (!updated) return res.status(404).json({ message: "Review not found" });
+    const review = await ReviewModel.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: "Review not found" });
 
-    res.status(200).json({ message: "Review updated successfully", data: updated });
+    // Verify ownership or admin status
+    if (review.user !== req.user.id && !req.user.isAdmin) {
+      return res.status(403).json({ message: "Unauthorized to update this review" });
+    }
+
+    if (rating) review.rating = rating;
+    if (comment) review.comment = comment;
+    await review.save();
+
+    // Recalculate product rating
+    const reviews = await ReviewModel.find({ product: review.product });
+    const avgRating =
+      reviews.length > 0
+        ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+        : 0;
+
+    await ProductModel.findByIdAndUpdate(review.product, {
+      rating: avgRating,
+      numReviews: reviews.length,
+    });
+
+    res.status(200).json({ message: "Review updated successfully", data: review });
   } catch (err) {
     console.error("Update Review Error:", err);
     res.status(500).json({ message: "Server error" });
@@ -95,10 +114,29 @@ const updateReview = async (req, res) => {
 // 🔹 Delete Review
 const deleteReview = async (req, res) => {
   try {
-    const deleted = await ReviewModel.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "Review not found" });
+    const review = await ReviewModel.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: "Review not found" });
 
-    res.status(200).json({ message: "Review deleted successfully", data: deleted });
+    // Verify ownership or admin status
+    if (review.user !== req.user.id && !req.user.isAdmin) {
+      return res.status(403).json({ message: "Unauthorized to delete this review" });
+    }
+
+    await ReviewModel.findByIdAndDelete(req.params.id);
+
+    // Recalculate product rating
+    const reviews = await ReviewModel.find({ product: review.product });
+    const avgRating =
+      reviews.length > 0
+        ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+        : 0;
+
+    await ProductModel.findByIdAndUpdate(review.product, {
+      rating: avgRating,
+      numReviews: reviews.length,
+    });
+
+    res.status(200).json({ message: "Review deleted successfully", data: review });
   } catch (err) {
     console.error("Delete Review Error:", err);
     res.status(500).json({ message: "Server error" });

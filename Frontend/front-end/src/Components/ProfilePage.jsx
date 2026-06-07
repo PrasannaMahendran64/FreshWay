@@ -1,14 +1,8 @@
-import { useEffect, useState } from "react";
 import { User, Mail, Phone, Calendar } from "lucide-react";
-import { getUserFromStorage } from "./ProtectedRoute";
+import { useSelector } from "react-redux";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const currentUser = getUserFromStorage();
-    if (currentUser) setUser(currentUser);
-  }, []);
+  const { user } = useSelector((state) => state.auth);
 
   if (!user) return <p className="text-center mt-10 text-gray-500">Loading...</p>;
 

@@ -31,6 +31,8 @@ import UpdateProfilePage from "./UpdateProfilePage"
 import ChangePasswordPage from "./ChangePasswordPage"
 import ProductsPage from "./ProductPage"
 import OffersPage from "./OffersPage"
+import AddressManagementPage from "./AddressManagementPage"
+import WishlistPage from "./WishlistPage"
 
 
 
@@ -90,6 +92,8 @@ const Routers = () => {
                     <Route path="/myaccount" element={<MyAccountLayout />}>
                         <Route index element={<AccountDashboard />} />
                         <Route path="myorders" element={<MyOrdersPage />} />
+                        <Route path="wishlist" element={<WishlistPage />} />
+                        <Route path="address" element={<AddressManagementPage />} />
                         <Route path="myreviews" element={<MyReviewsPage />} />
                         <Route path="myprofile" element={<ProfilePage />} />
                         <Route path="myupdate-profile" element={<UpdateProfilePage />} />

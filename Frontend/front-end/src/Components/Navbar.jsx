@@ -19,7 +19,13 @@ import {
 import { Link, useNavigate } from "react-router";
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
-import { getUserFromStorage } from "./ProtectedRoute";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/slices/authSlice";
+import { clearCartState } from "../redux/slices/cartSlice";
+import { clearOrderState } from "../redux/slices/orderSlice";
+import { clearWishlistState } from "../redux/slices/wishlistSlice";
+import { clearAddressState } from "../redux/slices/addressSlice";
+import { clearUserState } from "../redux/slices/userSlice";
 
 const Navbar = ({ cartItems, onCartClick }) => {
   const navigate = useNavigate();
@@ -38,22 +44,15 @@ const Navbar = ({ cartItems, onCartClick }) => {
     { name: "Drinks", icon: CupSoda, slug: "drinks" },
   ];
 
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false); // for desktop categories
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false); // for user dropdown
-  const [user, setUser] = useState(null);
+  const [searchVal, setSearchVal] = useState("");
+
+  const { user } = useSelector((state) => state.auth);
 
   const userDropdownRef = useRef(null);
-
-  useEffect(() => {
-    const updateUser = () => setUser(getUserFromStorage());
-    window.addEventListener("login", updateUser);
-    window.addEventListener("storage", updateUser);
-    return () => {
-      window.removeEventListener("login", updateUser);
-      window.removeEventListener("storage", updateUser);
-    };
-  }, []);
 
   // Close user dropdown when clicking outside
   useEffect(() => {
@@ -67,11 +66,13 @@ const Navbar = ({ cartItems, onCartClick }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
+    dispatch(clearCartState());
+    dispatch(clearOrderState());
+    dispatch(clearWishlistState());
+    dispatch(clearAddressState());
+    dispatch(clearUserState());
+    dispatch(logout());
     setUserDropdownOpen(false);
-    window.dispatchEvent(new Event("logout"));
     navigate("/login");
   };
 
@@ -79,6 +80,13 @@ const Navbar = ({ cartItems, onCartClick }) => {
     setOpen(false);
     setMobileCategoriesOpen(false);
     navigate(`/categories/${slug}`);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchVal.trim()) {
+      navigate(`/products/all?search=${encodeURIComponent(searchVal.trim())}`);
+    }
   };
 
   return (
@@ -94,16 +102,18 @@ const Navbar = ({ cartItems, onCartClick }) => {
           </div>
 
           {/* Search bar */}
-          <div className="flex w-1/2 max-w-md mx-auto">
+          <form onSubmit={handleSearchSubmit} className="flex w-1/2 max-w-md mx-auto">
             <input
               type="text"
               placeholder="Search for products..."
-              className="w-full px-4 py-2 bg-white rounded-l-lg focus:outline-none text-sm"
+              value={searchVal}
+              onChange={(e) => setSearchVal(e.target.value)}
+              className="w-full px-4 py-2 bg-white rounded-l-lg focus:outline-none text-sm text-gray-800"
             />
-            <button className="bg-gray-100 px-3 rounded-r-lg">
+            <button type="submit" className="bg-gray-100 px-3 rounded-r-lg cursor-pointer">
               <Search className="w-5 h-5 text-gray-600" />
             </button>
-          </div>
+          </form>
 
           {/* Icons */}
           <div className="flex items-center gap-4 text-white">

@@ -1,37 +1,37 @@
 import { useEffect, useState } from "react";
-import { getUserFromStorage } from "./ProtectedRoute";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserProfile } from "../redux/slices/userSlice";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { User, Mail, Lock, MapPin } from "lucide-react";
+import { User, Mail, MapPin } from "lucide-react";
 
 export default function UpdateProfilePage() {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.user);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    mobilenumber: "",
     password: "",
     address: "",
     profileImage: null,
   });
   const [previewImage, setPreviewImage] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const currentUser = getUserFromStorage();
-    if (currentUser) {
-      setUser(currentUser);
+    if (user) {
       setFormData({
-        name: currentUser.name || "",
-        email: currentUser.email || "",
-        phone: currentUser.phone || "",
+        name: user.name || "",
+        email: user.email || "",
+        mobilenumber: user.mobilenumber || "",
         password: "",
-        address: currentUser.address || "",
+        address: user.address || "",
         profileImage: null,
       });
-      setPreviewImage(currentUser.profileImage || "/default-avatar.png");
+      setPreviewImage(user.profileImage ? `/api/files/${user.profileImage}` : "/default-avatar.png");
     }
-  }, []);
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -46,25 +46,24 @@ export default function UpdateProfilePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const data = new FormData();
-      for (const key in formData) {
-        if (formData[key]) data.append(key, formData[key]);
-      }
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("mobilenumber", formData.mobilenumber);
+    data.append("address", formData.address);
+    if (formData.password) {
+      data.append("password", formData.password);
+    }
+    if (formData.profileImage) {
+      data.append("profileImage", formData.profileImage);
+    }
 
-      const res = await axios.put(`/api/update-profile/${user._id}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      toast.success("Profile updated successfully!");
-      setUser(res.data);
+    const resultAction = await dispatch(updateUserProfile(data));
+    if (updateUserProfile.fulfilled.match(resultAction)) {
+      toast.success("✅ Profile updated successfully!");
       setFormData((prev) => ({ ...prev, password: "" }));
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to update profile");
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error(resultAction.payload || "❌ Failed to update profile");
     }
   };
 
@@ -82,7 +81,7 @@ export default function UpdateProfilePage() {
         <div className="flex flex-col items-center gap-3">
           <div className="relative w-32 h-32">
             <img
-              src={`/api/files/${user.profileImage}` || "/default-avatar.png"}
+              src={previewImage || "/default-avatar.png"}
               alt="Profile Preview"
               className="w-32 h-32 rounded-full object-cover border-4 border-green-100"
             />
@@ -115,11 +114,11 @@ export default function UpdateProfilePage() {
         />
         <InputField
           icon={<User size={18} />}
-          label="Phone"
-          name="phone"
-          value={formData.phone}
+          label="Mobile Number"
+          name="mobilenumber"
+          value={formData.mobilenumber}
           onChange={handleChange}
-          placeholder="Enter your phone number"
+          placeholder="Enter your mobile number"
         />
        
         <InputField

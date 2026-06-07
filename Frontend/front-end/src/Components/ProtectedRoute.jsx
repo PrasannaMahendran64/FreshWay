@@ -15,11 +15,13 @@ export const getUserFromStorage = () => {
   }
 };
 
+import { useSelector } from "react-redux";
+
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
-  const user = getUserFromStorage();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

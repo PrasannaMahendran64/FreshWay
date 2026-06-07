@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import dayjs from "dayjs";
 import DashboardCards from "./Component/DashboardCards";
 import Charts from "./Component/Charts";
+import { RefreshCcw, Calendar } from "lucide-react";
 
 export default function Dashboard() {
   const [stats, setStats] = useState([
@@ -13,46 +13,77 @@ export default function Dashboard() {
   ]);
 
   const [chartData, setChartData] = useState([]);
+  const [range, setRange] = useState("monthly");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [range]);
 
   const fetchStats = async () => {
     try {
-      const users = await axios.get("/api/get-users");
-      const products = await axios.get("/api/get-product");
-      const orders = await axios.get("/api/get-orders");
-
-      const revenue = orders.data.data?.reduce((acc, o) => acc + o.totalPrice, 0);
+      setLoading(true);
+      const res = await axios.get(`/api/admin/dashboard-stats?range=${range}`);
+      const { summary, salesTrend } = res.data;
 
       setStats([
-        { title: "Users", value: users.data.length },
-        { title: "Products", value: products.data.data.length },
-        { title: "Orders", value: orders.data.data.length },
-        { title: "Revenue", value: revenue || 0 },
+        { title: "Users", value: summary.totalUsers },
+        { title: "Products", value: summary.totalProducts },
+        { title: "Orders", value: summary.totalOrders },
+        { title: "Revenue", value: summary.totalRevenue },
       ]);
 
-      // Format chart data (group by day)
-      const grouped = {};
-      orders.data.data.forEach(order => {
-        const date = dayjs(order.createdAt).format("YYYY-MM-DD");
-        if (!grouped[date]) grouped[date] = { date, orders: 0, revenue: 0 };
-        grouped[date].orders += 1;
-        grouped[date].revenue += order.totalPrice;
-      });
-
-      setChartData(Object.values(grouped));
+      setChartData(salesTrend || []);
     } catch (err) {
-      console.error(err);
+      console.error("Error loading dashboard stats:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-8 text-gray-700">Dashboard</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-700">Dashboard</h1>
+          <p className="text-gray-400 text-xs mt-1">Real-time statistics & business insights.</p>
+        </div>
+
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          {/* Range Selector */}
+          <div className="flex bg-white border border-gray-200 rounded-xl p-1 shadow-sm">
+            {["daily", "weekly", "monthly", "yearly"].map((r) => (
+              <button
+                key={r}
+                onClick={() => setRange(r)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition ${
+                  range === r
+                    ? "bg-green-600 text-white shadow"
+                    : "text-gray-500 hover:text-gray-800"
+                }`}
+              >
+                {r}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={fetchStats}
+            disabled={loading}
+            className="flex items-center gap-1.5 px-3 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-xl text-xs font-bold transition shadow-sm"
+          >
+            <RefreshCcw size={14} className={loading ? "animate-spin" : ""} />
+            Refresh
+          </button>
+        </div>
+      </div>
+
       <DashboardCards data={stats} />
-      <div className="mt-10">
+      
+      <div className="mt-10 bg-white border border-gray-100 p-6 rounded-3xl shadow-sm">
+        <h3 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+          <Calendar size={18} className="text-green-600" /> Sales Trend ({range} range)
+        </h3>
         <Charts data={chartData} />
       </div>
     </div>

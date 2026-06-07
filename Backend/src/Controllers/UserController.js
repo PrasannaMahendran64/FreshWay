@@ -5,6 +5,8 @@ const mail =require("../utils/MailServices")
 const bcrypt = require("bcrypt");
 const ReviewModel = require("../Models/ReviewModel");
 const OrderModel = require("../Models/OrderModel");
+const path = require("path");
+const fs = require("fs");
 
 
 const userRegisterController = async (req, res) => {
@@ -117,7 +119,7 @@ const userVerifyOtpController = async (req,res)=>{
         }
 
 
-        const token = await generateToken(exitUser._id)
+        const token = await generateToken(exitUser)
 
         return res.status(201).send({message:"OTP verified successfully",data:{token:token}})
         
@@ -222,10 +224,14 @@ const showProfileController = async (req,res) =>{
 
 const getUserReviewsController = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
 
-    const reviews = await ReviewModel.find({ userId: id }).populate("product", "name")
-      
+    // Securely check authorization
+    if (req.user.id !== userId && !req.user.isAdmin) {
+      return res.status(403).json({ message: "Unauthorized to access these reviews" });
+    }
+
+    const reviews = await ReviewModel.find({ user: userId }).populate("product", "name")
       .sort({ createdAt: -1 });
 
     if (!reviews.length) {
@@ -237,13 +243,20 @@ const getUserReviewsController = async (req, res) => {
       data: reviews,
     });
   } catch (error) {
-    console.error("Get User Reviews Error:", error); // ✅ This will now show full details
+    console.error("Get User Reviews Error:", error);
     return res.status(500).json({ message: "Error fetching user reviews", error: error.message });
   }
 };
+
 const updateProfileController = async (req, res) => {
     try {
         const { name, email, mobilenumber, address, password } = req.body;
+
+        // Securely check authorization
+        if (req.user.id !== req.params.id && !req.user.isAdmin) {
+            return res.status(403).json({ message: "Unauthorized to update this profile" });
+        }
+
         const user = await UserModel.findById(req.params.id);
         if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -252,13 +265,15 @@ const updateProfileController = async (req, res) => {
         if (email) user.email = email;
         if (mobilenumber) user.mobilenumber = mobilenumber;
         if (address) user.address = address;
-        if (password) user.password = password; // hash in production
+        if (password) {
+            user.password = await bcrypt.hash(password, 10); // Securely hash password on update
+        }
 
         // Profile image upload
         if (req.file) {
             // delete old image if exists
             if (user.profileImage) {
-                const oldPath = path.join(__dirname, "..", "uploads/profile", user.profileImage);
+                const oldPath = path.join(__dirname, "..", "Uploads", user.profileImage);
                 if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
             }
             user.profileImage = req.file.filename;
@@ -273,11 +288,15 @@ const updateProfileController = async (req, res) => {
     }
 };
 
-
 const changePasswordController = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const userId = req.params.userId;
+
+    // Securely check authorization
+    if (req.user.id !== userId && !req.user.isAdmin) {
+      return res.status(403).json({ message: "Unauthorized to change this password" });
+    }
 
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ message: "All fields are required" });
